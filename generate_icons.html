@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LeetCode Spaced Repetition - Icon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon-preview { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        button { padding: 10px 20px; margin: 5px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #5a6fd8; }
+    </style>
+</head>
+<body>
+    <h1>LeetCode Spaced Repetition - Icon Generator</h1>
+    <p>This will generate the required icon files for the Chrome extension.</p>
+    
+    <div class="icon-preview">
+        <h3>Icon Previews:</h3>
+        <canvas id="icon16" width="16" height="16"></canvas>
+        <canvas id="icon48" width="48" height="48"></canvas>
+        <canvas id="icon128" width="128" height="128"></canvas>
+    </div>
+    
+    <div>
+        <button onclick="generateAllIcons()">Generate All Icons</button>
+        <button onclick="downloadIcon16()">Download 16x16</button>
+        <button onclick="downloadIcon48()">Download 48x48</button>
+        <button onclick="downloadIcon128()">Download 128x128</button>
+    </div>
+    
+    <div style="margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 4px;">
+        <h4>Instructions:</h4>
+        <ol>
+            <li>Click "Generate All Icons" to create the icon previews</li>
+            <li>Click each download button to save the PNG files</li>
+            <li>Save the files as <code>icon16.png</code>, <code>icon48.png</code>, and <code>icon128.png</code></li>
+            <li>Place them in the <code>icons/</code> folder of your extension</li>
+        </ol>
+    </div>
+
+    <script>
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw "LR" text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('LR', size/2, size/2);
+            
+            // Add a small brain emoji (only for larger sizes)
+            if (size >= 48) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.font = `${size * 0.15}px Arial`;
+                ctx.fillText('🧠', size/2, size * 0.8);
+            }
+        }
+        
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function generateAllIcons() {
+            drawIcon('icon16', 16);
+            drawIcon('icon48', 48);
+            drawIcon('icon128', 128);
+            alert('Icons generated! Click the download buttons to save them.');
+        }
+        
+        function downloadIcon16() {
+            drawIcon('icon16', 16);
+            downloadCanvas('icon16', 'icon16.png');
+        }
+        
+        function downloadIcon48() {
+            drawIcon('icon48', 48);
+            downloadCanvas('icon48', 'icon48.png');
+        }
+        
+        function downloadIcon128() {
+            drawIcon('icon128', 128);
+            downloadCanvas('icon128', 'icon128.png');
+        }
+        
+        // Auto-generate on page load
+        window.onload = function() {
+            generateAllIcons();
+        };
+    </script>
+</body>
+</html> 

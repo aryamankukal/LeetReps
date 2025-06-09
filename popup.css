@@ -1,0 +1,358 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #333;
+    background: #f8f9fa;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px;
+    height: 600px;
+    max-width: 100vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stats {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    background: #f1f3f4;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 12px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background: #e8eaed;
+    color: #333;
+}
+
+.tab-btn.active {
+    background: white;
+    color: #667eea;
+    border-bottom: 2px solid #667eea;
+}
+
+/* Tab content */
+.tab-content {
+    flex: 1 1 auto;
+    padding: 0 20px 0 20px;
+    overflow-y: auto;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Make sure both tab panes fill the same space */
+#reviews, #all {
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.count {
+    background: #667eea;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.filters select {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    background: white;
+}
+
+/* Problems list */
+.problems-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.problem-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    transition: margin 0.08s, box-shadow 0.08s, border-color 0.08s;
+    position: relative;
+    animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.problem-card.deleting {
+    animation: swipeOutRight 0.09s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes swipeOutRight {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100vw); }
+}
+
+.problem-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+}
+
+.problem-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.problem-title {
+    font-size: 15px;
+    word-break: break-word;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    flex: 1;
+    margin-right: 8px;
+}
+
+.problem-title:hover {
+    color: #667eea;
+}
+
+.difficulty-badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.difficulty-badge.easy {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.difficulty-badge.medium {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.difficulty-badge.hard {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.problem-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.problem-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+}
+
+.btn-primary.mark-reviewed-btn {
+    background: #5a4f8a; /* Darker purple from the header gradient */
+}
+
+.btn-primary.mark-reviewed-btn:hover {
+    background: #4a3f7a; /* Even darker on hover */
+}
+
+.btn-secondary {
+    background: #f1f3f4;
+    color: #666;
+}
+
+.btn-secondary:hover {
+    background: #e8eaed;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* Empty state */
+.empty-state {
+    font-size: 15px;
+    color: #666;
+    padding: 40px 20px;
+}
+
+.empty-state p {
+    margin-bottom: 8px;
+}
+
+.empty-state .subtitle {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Footer */
+.footer {
+    padding: 12px 20px;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+.footer button,
+#clearAll,
+#exportData {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #667eea;
+    color: white;
+    transition: background 0.2s;
+    margin: 0 2px;
+}
+
+.footer button:hover,
+#clearAll:hover,
+#exportData:hover {
+    background: #5a6fd8;
+}
+
+/* Scrollbar */
+.problems-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.problems-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.problems-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.problems-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive */
+@media (max-width: 450px) {
+    .container {
+        width: 100vw;
+        min-width: 0;
+        border-radius: 0;
+    }
+    
+    .problem-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .problem-title {
+        margin-right: 0;
+        margin-bottom: 4px;
+    }
+} 

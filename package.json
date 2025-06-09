@@ -1,0 +1,28 @@
+{
+  "name": "leetcode-spaced-repetition",
+  "version": "1.0.0",
+  "description": "Chrome extension for spaced repetition of LeetCode problems",
+  "main": "background.js",
+  "scripts": {
+    "build": "echo 'No build process needed for Chrome extension'",
+    "test": "echo 'No tests specified'",
+    "package": "zip -r leetcode-spaced-repetition.zip . -x '*.git*' 'node_modules/*' '*.DS_Store'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "leetcode",
+    "spaced-repetition",
+    "learning",
+    "programming"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/leetcode-spaced-repetition.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/leetcode-spaced-repetition/issues"
+  },
+  "homepage": "https://github.com/yourusername/leetcode-spaced-repetition#readme"
+} 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=400, initial-scale=1.0">
+    <title>LeetCode Spaced Repetition</title>
+    <link rel="stylesheet" href="popup.css">
+    <style>
+      html, body {
+        width: 400px !important;
+        min-width: 400px !important;
+        max-width: 400px !important;
+        height: 600px !important;
+        min-height: 600px !important;
+        max-height: 600px !important;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      .container {
+        height: 100% !important;
+        min-height: 100% !important;
+        max-height: 100% !important;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">LeetCode Spaced Repetition</h1>
+            <div class="stats">
+                <span id="totalProblems">0</span> problems
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="reviews">Today's Reviews</button>
+            <button class="tab-btn" data-tab="all">All Problems</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Today's Reviews Tab -->
+            <div id="reviews" class="tab-pane active">
+                <div class="section-header">
+                    <h2>Problems to Review Today</h2>
+                    <span id="reviewCount" class="count">0</span>
+                </div>
+                
+                <div id="reviewsList" class="problems-list">
+                    <div class="empty-state">
+                        <p>No problems due for review today!</p>
+                        <p class="subtitle">Keep solving problems on LeetCode to build your review queue.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Problems Tab -->
+            <div id="all" class="tab-pane">
+                <div class="section-header">
+                    <h2>All Saved Problems</h2>
+                    <div class="filters">
+                        <select id="difficultyFilter">
+                            <option value="">All Difficulties</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="allProblemsList" class="problems-list">
+                    <div class="empty-state">
+                        <p>No problems saved yet!</p>
+                        <p class="subtitle">Solve problems on LeetCode to start building your spaced repetition system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <button id="clearAll" class="btn-secondary">Clear All</button>
+            <button id="exportData" class="btn-secondary">Export Data</button>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 
