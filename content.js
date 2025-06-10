@@ -23,8 +23,8 @@ class LeetCodeMonitor {
   setupMonitoring() {
     // Check if we're on a problem page
     if (this.isProblemPage()) {
-      this.extractProblemData();
-      this.startSubmissionMonitoring();
+      // Only set up submission button monitoring, don't extract data yet
+      this.monitorSubmissionButton();
     }
   }
 
@@ -107,15 +107,17 @@ class LeetCodeMonitor {
   startSubmissionMonitoring() {
     if (this.isMonitoring) return;
     
+    // Extract problem data only when user actually submits
+    this.extractProblemData();
+    
     this.isMonitoring = true;
     this.startTime = Date.now();
     this.hasSubmitted = false; // Reset flag for new submission
 
+    console.log('LeetCode Spaced Repetition: Starting submission monitoring');
+
     // Monitor for submission success
     this.observeSubmissionResults();
-    
-    // Also listen for submission button clicks
-    this.monitorSubmissionButton();
     
     // Additional monitoring for success messages
     this.monitorSuccessMessages();
@@ -149,8 +151,8 @@ class LeetCodeMonitor {
       if (target.textContent.includes('Submit') || 
           target.closest('[data-cy="submit-code-btn"]') ||
           target.closest('button[type="submit"]')) {
-        this.startTime = Date.now();
-        console.log('LeetCode Spaced Repetition: Submission started');
+        console.log('LeetCode Spaced Repetition: Submit button clicked, starting monitoring');
+        this.startSubmissionMonitoring();
       }
     });
   }
