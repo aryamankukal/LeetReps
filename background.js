@@ -183,8 +183,19 @@ class SpacedRepetitionManager {
   }
 
   calculateNextReview(problem) {
-    // For testing: always set nextReview to 5 minutes from now
-    return Date.now() + 5 * 60 * 1000;
+    const reviewCount = problem.reviewCount || 0;
+    // Spaced repetition intervals in days
+    const intervals = [1, 3, 7, 14, 30, 60, 120, 240];
+    const intervalIndex = Math.min(reviewCount, intervals.length - 1);
+    const intervalDays = intervals[intervalIndex];
+
+    // Calculate the target date (intervalDays from now)
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Set to today's midnight
+    const targetDate = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000);
+
+    // Set nextReview to 12:00 AM of the target day
+    return targetDate.getTime();
   }
 
   getDaysSinceLastReview(problem) {
