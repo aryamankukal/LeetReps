@@ -124,7 +124,7 @@ class PopupManager {
 
   createProblemCard(problem, isReview = false) {
     const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : 'medium';
-    const nextReviewDate = problem.nextReview ? new Date(problem.nextReview).toLocaleDateString() : 'Not scheduled';
+    const nextReviewDate = problem.nextReview ? new Date(problem.nextReview).toLocaleString() : 'Not scheduled';
     const timeSpent = this.formatTime(problem.timeSpent);
     
     return `

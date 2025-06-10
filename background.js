@@ -95,10 +95,10 @@ class SpacedRepetitionManager {
         solveCount: 1,
         reviewCount: 0,
         lastReviewed: null,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        nextReview: this.calculateNextReview(problemData)
       };
-      // Set initial next review date (1 day from now)
-      newProblem.nextReview = this.calculateNextReview(newProblem);
+      console.log('[SR] New problem nextReview:', newProblem.nextReview, new Date(newProblem.nextReview).toLocaleString());
       this.problems.set(problemId.toString(), newProblem);
     }
 
@@ -183,25 +183,10 @@ class SpacedRepetitionManager {
   }
 
   calculateNextReview(problem) {
-    const baseInterval = 24 * 60 * 60 * 1000; // 1 day
-    const reviewCount = problem.reviewCount || 0;
-    
-    // Exponential backoff: 1 day, 3 days, 1 week, 2 weeks, 1 month, etc.
-    const intervals = [1, 3, 7, 14, 30, 60, 120, 240];
-    const intervalIndex = Math.min(reviewCount, intervals.length - 1);
-    const intervalDays = intervals[intervalIndex];
-    
-    // Adjust based on difficulty
-    const difficultyMultiplier = {
-      'Easy': 1.5,
-      'Medium': 1.0,
-      'Hard': 0.7
-    };
-    
-    const multiplier = difficultyMultiplier[problem.difficulty] || 1.0;
-    const adjustedInterval = intervalDays * multiplier * baseInterval;
-    
-    return Date.now() + adjustedInterval;
+    // Always set nextReview to 20 seconds from now, in ms
+    const nextReview = Date.now() + 20 * 1000;
+    console.log('[SR] Setting nextReview to:', nextReview, '(', new Date(nextReview).toLocaleString(), ')');
+    return nextReview;
   }
 
   getDaysSinceLastReview(problem) {
