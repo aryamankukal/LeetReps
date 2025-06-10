@@ -183,10 +183,8 @@ class SpacedRepetitionManager {
   }
 
   calculateNextReview(problem) {
-    // Always set nextReview to 20 seconds from now, in ms
-    const nextReview = Date.now() + 20 * 1000;
-    console.log('[SR] Setting nextReview to:', nextReview, '(', new Date(nextReview).toLocaleString(), ')');
-    return nextReview;
+    // For testing: always set nextReview to 5 minutes from now
+    return Date.now() + 5 * 60 * 1000;
   }
 
   getDaysSinceLastReview(problem) {
