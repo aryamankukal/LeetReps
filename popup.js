@@ -56,12 +56,23 @@ class PopupManager {
       this.allProblems = problems || [];
 
       // Update stats
-      const totalProblemsElem = document.getElementById('totalProblems');
-      if (totalProblemsElem) totalProblemsElem.textContent = this.allProblems.length;
+      const totalProblemsBadge = document.getElementById('totalProblemsBadge');
+      if (totalProblemsBadge) totalProblemsBadge.textContent = this.allProblems.length;
       const reviewCountElem = document.getElementById('reviewCount');
       if (reviewCountElem) reviewCountElem.textContent = this.dailyReviews.length;
+      // Set loading to false and render
+      this.isLoading = false;
+      this.render();
     } catch (error) {
-      console.error('Error loading data:', error);
+      if (error && error.message) {
+        console.error('Error loading data:', error.message, error.stack);
+      } else {
+        try {
+          console.error('Error loading data:', JSON.stringify(error));
+        } catch (e) {
+          console.error('Error loading data:', error);
+        }
+      }
     }
   }
 
@@ -282,11 +293,25 @@ class PopupManager {
     }
   }
 
-  async sendMessage(type, data = {}) {
+  async sendMessage(type, data = {}, retry = false) {
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage({ type, ...data }, (response) => {
         if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
+          if (!retry) {
+            // Retry once after 200ms if background is cold
+            setTimeout(() => {
+              this.sendMessage(type, data, true).then(resolve).catch(reject);
+            }, 200);
+          } else {
+            // Show a user-friendly error in the UI
+            const container = document.querySelector('.tab-content');
+            if (container) {
+              container.innerHTML = `<div style='color:#c00;text-align:center;padding:40px 0;'>
+                <b>Failed to load data.<br>Please close and reopen the popup.</b>
+              </div>`;
+            }
+            resolve(null);
+          }
         } else {
           resolve(response);
         }

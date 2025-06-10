@@ -28,9 +28,7 @@
     <div class="container">
         <header class="header">
             <h1 class="title">LeetCode Spaced Repetition</h1>
-            <div class="stats">
-                <span id="totalProblems">0</span> problems
-            </div>
+            <img src="icons/icon16.png" alt="LeetCode Logo" style="display:block;margin:0 auto 8px auto;width:32px;height:32px;" />
         </header>
 
         <div class="tabs">
@@ -57,7 +55,10 @@
             <!-- All Problems Tab -->
             <div id="all" class="tab-pane">
                 <div class="section-header">
-                    <h2>All Saved Problems</h2>
+                    <h2 style="display:inline-flex;align-items:center;gap:8px;">
+                      All Saved Problems
+                      <span id="totalProblemsBadge" class="count all-badge">0</span>
+                    </h2>
                     <div class="filters">
                         <select id="difficultyFilter">
                             <option value="">All Difficulties</option>

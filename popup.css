@@ -355,4 +355,20 @@ html, body {
         margin-right: 0;
         margin-bottom: 4px;
     }
+}
+
+.all-badge {
+    font-size: 13px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    padding: 0 7px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #667eea;
+    color: #fff;
+    font-weight: 600;
+    margin-left: 2px;
+    vertical-align: middle;
 } 
