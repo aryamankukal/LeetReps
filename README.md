@@ -12,9 +12,6 @@ A Chrome extension that implements spaced repetition for LeetCode problems to he
 - **Time Tracking**: Tracks how long you spend on each problem.
 - **Data Export**: Export your problem data for backup or analysis.
 - **Dark Mode**: Toggle a beautiful dark mode with a modern animated switch.
-- **Modern UI/UX**: Clean, responsive interface with smooth animations, clear icons, and accessible tooltips.
-- **Feedback Button**: Quickly send feedback or suggestions via the Feedback button in the header.
-- **Robust Error Handling**: Improved error and edge case handling throughout the app.
 
 ## Spaced Repetition Algorithm
 
