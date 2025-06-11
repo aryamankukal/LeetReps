@@ -231,23 +231,35 @@ class SpacedRepetitionManager {
     // Check for review problems every hour
     setInterval(() => {
       this.checkForReviewNotifications();
-    }, 60 * 60 * 1000);
-    
+    }, 60 * 60 * 1000); // every 1 hour
     // Also check immediately
     this.checkForReviewNotifications();
   }
 
   async checkForReviewNotifications() {
     const reviews = await this.getDailyReviews();
-    
     if (reviews.length > 0) {
       // Update badge with number of problems due for review
       chrome.action.setBadgeText({
         text: reviews.length.toString()
       });
-      
       chrome.action.setBadgeBackgroundColor({
         color: '#ff4444'
+      });
+      // Show notification (once per day)
+      const today = new Date();
+      const todayKey = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+      chrome.storage.local.get(['lastNotification'], (result) => {
+        if (result.lastNotification !== todayKey) {
+          chrome.notifications.create('leetreview-due', {
+            type: 'basic',
+            iconUrl: 'icons/lc128icon.png',
+            title: 'LeetReview: Reviews Due',
+            message: `You have ${reviews.length} problem(s) to review today!`,
+            priority: 2
+          });
+          chrome.storage.local.set({ lastNotification: todayKey });
+        }
       });
     } else {
       chrome.action.setBadgeText({
@@ -300,4 +312,4 @@ class SpacedRepetitionManager {
 }
 
 // Initialize the manager
-new SpacedRepetitionManager(); 
+self.manager = new SpacedRepetitionManager(); 
