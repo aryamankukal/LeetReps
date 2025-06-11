@@ -31,25 +31,6 @@ The extension uses an exponential spacing system:
 7. **Export Data**: Use the Export Data button to download your problem data.
 8. **Send Feedback**: Use the Feedback button in the header to open the feedback form.
 
-## File Structure
-
-```
-├── manifest.json          # Extension manifest
-├── content.js            # Content script for LeetCode monitoring
-├── background.js         # Background service worker
-├── popup.html            # Extension popup interface
-├── popup.css             # Popup styles
-├── popup.js              # Popup functionality
-├── icons/                # Extension icons
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── README.md             # This file
-├── LICENSE               # MIT License
-├── CONTRIBUTING.md       # Contributing guidelines
-└── .gitignore            # Git ignore file
-```
-
 ## Permissions
 
 - **storage**: To save problem data locally
