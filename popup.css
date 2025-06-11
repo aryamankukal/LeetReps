@@ -371,4 +371,133 @@ html, body {
     font-weight: 600;
     margin-left: 2px;
     vertical-align: middle;
+}
+
+/* --- DARK MODE --- */
+body.dark-mode {
+    background: #181a1b;
+    color: #e0e0e0;
+}
+
+body.dark-mode .container {
+    background: #23272a;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .header {
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    color: #fff;
+}
+
+body.dark-mode .tabs {
+    background: #23272a;
+    border-bottom: 1px solid #333;
+}
+
+body.dark-mode .tab-btn {
+    color: #bbb;
+    background: none;
+}
+body.dark-mode .tab-btn.active {
+    background: #23272a;
+    color: #7f9cf5;
+    border-bottom: 2px solid #7f9cf5;
+}
+body.dark-mode .tab-btn:hover {
+    background: #23272a;
+    color: #fff;
+}
+
+body.dark-mode .tab-content {
+    background: #23272a;
+}
+
+body.dark-mode .section-header h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .count, body.dark-mode .all-badge {
+    background: #7f9cf5;
+    color: #23272a;
+}
+
+body.dark-mode .filters select {
+    background: #23272a;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+body.dark-mode .problem-card {
+    background: #23272a;
+    border: 1px solid #333;
+    color: #e0e0e0;
+}
+body.dark-mode .problem-card:hover {
+    border-color: #7f9cf5;
+    box-shadow: 0 2px 8px rgba(127, 156, 245, 0.12);
+}
+body.dark-mode .problem-title {
+    color: #e0e0e0;
+}
+body.dark-mode .problem-title:hover {
+    color: #7f9cf5;
+}
+body.dark-mode .difficulty-badge.easy {
+    background: #234d20;
+    color: #a8e6a3;
+}
+body.dark-mode .difficulty-badge.medium {
+    background: #4d3a1a;
+    color: #ffd580;
+}
+body.dark-mode .difficulty-badge.hard {
+    background: #4d2323;
+    color: #ffb3b3;
+}
+body.dark-mode .problem-meta {
+    color: #bbb;
+}
+body.dark-mode .btn-primary {
+    background: #7f9cf5;
+    color: #23272a;
+}
+body.dark-mode .btn-primary:hover {
+    background: #667eea;
+    color: #fff;
+}
+body.dark-mode .btn-secondary {
+    background: #333;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+body.dark-mode .btn-secondary:hover {
+    background: #444;
+    color: #fff;
+}
+body.dark-mode .btn-danger {
+    background: #a94442;
+    color: #fff;
+}
+body.dark-mode .btn-danger:hover {
+    background: #c9302c;
+}
+body.dark-mode .empty-state p,
+body.dark-mode .empty-state .subtitle {
+    color: #bbb;
+}
+body.dark-mode .footer {
+    background: #23272a;
+}
+body.dark-mode .modal-content {
+    background: #23272a !important;
+    color: #e0e0e0;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45) !important;
+}
+body.dark-mode input[type="date"] {
+    background: #181a1b;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+body.dark-mode label {
+    color: #bbb;
 } 
