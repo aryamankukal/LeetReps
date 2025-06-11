@@ -85,6 +85,28 @@ class PopupManager {
       });
       document.getElementById('settingsModal').style.display = 'none';
     };
+
+    // Info tooltip logic
+    const infoBtn = document.getElementById('infoBtn');
+    const infoTooltip = document.getElementById('infoTooltip');
+    if (infoBtn && infoTooltip) {
+      let tooltipTimeout;
+      const showTooltip = () => {
+        clearTimeout(tooltipTimeout);
+        infoTooltip.style.display = 'block';
+      };
+      const hideTooltip = () => {
+        tooltipTimeout = setTimeout(() => {
+          infoTooltip.style.display = 'none';
+        }, 80);
+      };
+      infoBtn.addEventListener('mouseenter', showTooltip);
+      infoBtn.addEventListener('focus', showTooltip);
+      infoBtn.addEventListener('mouseleave', hideTooltip);
+      infoBtn.addEventListener('blur', hideTooltip);
+      infoTooltip.addEventListener('mouseenter', showTooltip);
+      infoTooltip.addEventListener('mouseleave', hideTooltip);
+    }
   }
 
   async loadData() {
@@ -423,18 +445,54 @@ class PopupManager {
 let popupManager;
 document.addEventListener('DOMContentLoaded', () => {
   // Apply dark mode if previously set
-  if (localStorage.getItem('sr_dark_mode') === 'true') {
+  const isDark = localStorage.getItem('sr_dark_mode') === 'true';
+  if (isDark) {
     document.body.classList.add('dark-mode');
   }
   popupManager = new PopupManager();
-  // Dark mode toggle
-  const darkBtn = document.getElementById('toggleDarkMode');
-  if (darkBtn) {
-    darkBtn.onclick = () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('sr_dark_mode', isDark ? 'true' : 'false');
+  // Dark mode toggle switch
+  const darkSwitch = document.getElementById('toggleDarkModeSwitch');
+  if (darkSwitch) {
+    darkSwitch.checked = isDark;
+    darkSwitch.onchange = () => {
+      document.body.classList.toggle('dark-mode', darkSwitch.checked);
+      localStorage.setItem('sr_dark_mode', darkSwitch.checked ? 'true' : 'false');
     };
+  }
+  // Info tooltip logic
+  const infoBtn = document.getElementById('infoBtn');
+  const infoTooltip = document.getElementById('infoTooltip');
+  if (infoBtn && infoTooltip) {
+    let tooltipTimeout;
+    const showTooltip = () => {
+      clearTimeout(tooltipTimeout);
+      infoTooltip.style.display = 'block';
+    };
+    const hideTooltip = () => {
+      tooltipTimeout = setTimeout(() => {
+        infoTooltip.style.display = 'none';
+      }, 80);
+    };
+    infoBtn.addEventListener('mouseenter', showTooltip);
+    infoBtn.addEventListener('focus', showTooltip);
+    infoBtn.addEventListener('mouseleave', hideTooltip);
+    infoBtn.addEventListener('blur', hideTooltip);
+    infoTooltip.addEventListener('mouseenter', showTooltip);
+    infoTooltip.addEventListener('mouseleave', hideTooltip);
+  }
+  // Feedback button logic
+  const feedbackBtn = document.getElementById('feedbackBtn');
+  if (feedbackBtn) {
+    feedbackBtn.onclick = () => {
+      window.open('https://docs.google.com/forms/d/e/1FAIpQLSepToVV2A_nK79-tPxoazqUnbvJTS6ZPn-PrGibFn2mVA-Hxg/viewform?usp=preview', '_blank');
+    };
+  }
+  // Auto-open settings modal on first use
+  if (!localStorage.getItem('sr_seen_settings_modal')) {
+    const end = localStorage.getItem('sr_study_end');
+    if (end) document.getElementById('studyEndDate').value = end;
+    document.getElementById('settingsModal').style.display = 'flex';
+    localStorage.setItem('sr_seen_settings_modal', 'true');
   }
 });
 

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "LeetCode Spaced Repetition",
+  "name": "LeetReps",
   "version": "1.0.0",
   "description": "Spaced repetition system for LeetCode problems to help you retain knowledge",
   "permissions": [
