@@ -30,11 +30,14 @@
           <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <img src="icons/lc128icon.png" alt="LeetCode Logo" style="width:24px;height:24px;vertical-align:middle;" />
-              <span style="font-size:18px;font-weight:600;white-space:nowrap;">LeetReview Spaced Repetition</span>
+              <span style="font-size:18px;font-weight:600;white-space:nowrap;">LeetReps</span>
             </div>
-            <button id="settingsBtn" style="background:none;border:none;cursor:pointer;padding:0;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 5 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.6 5a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 16 5a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19 8.6a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19 15.4z"></path></svg>
-            </button>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button id="feedbackBtn" class="btn-secondary btn-feedback" style="height:28px;min-width:70px;font-size:13px;">Feedback</button>
+              <button id="settingsBtn" style="background:none;border:none;cursor:pointer;padding:0;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 5 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.6 5a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 16 5a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19 8.6a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19 15.4z"></path></svg>
+              </button>
+            </div>
           </div>
         </header>
 
@@ -86,20 +89,37 @@
         </div>
 
         <footer class="footer">
-            <button id="clearAll" class="btn-secondary">Clear All</button>
-            <button id="exportData" class="btn-secondary">Export Data</button>
+            <label class="switch" style="display:inline-flex;align-items:center;cursor:pointer;">
+              <input type="checkbox" id="toggleDarkModeSwitch" style="display:none;">
+              <span class="slider">
+                <span class="switch-icon" aria-hidden="true"></span>
+              </span>
+            </label>
+            <div class="footer-inner">
+              <button id="clearAll" class="btn-secondary">Clear All</button>
+              <button id="exportData" class="btn-secondary">Export Data</button>
+            </div>
         </footer>
     </div>
 
     <div id="settingsModal" class="modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:1000;align-items:center;justify-content:center;">
       <div class="modal-content" style="background:#fff;padding:24px 20px 20px 20px;border-radius:10px;max-width:340px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;">
         <button id="closeSettingsModal" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;cursor:pointer;">&times;</button>
-        <h2 style="margin-bottom:16px;font-size:18px;">Custom Review Schedule</h2>
-        <label style="display:block;margin-bottom:8px;">Study End Date:</label>
+        <h2 style="margin-bottom:16px;font-size:18px;display:flex;align-items:center;gap:8px;">Custom Review Schedule
+          <button id="infoBtn" class="info-btn" aria-label="What is this?" tabindex="0" style="margin-left:6px;position:relative;">
+            <span>?</span>
+            <div id="infoTooltip" class="info-tooltip" style="display:none;">
+              <strong style="display:block; text-align:left; margin-bottom:8px;">What is the Target Date?</strong>
+              <div style="text-align:left; color:#888; font-weight:400; font-size:14px; line-height:1.6; font-family: inherit;">
+                The Target Date is the last day you want to be reviewing problems (for example, your next interview date).<br>
+                <hr style="border:none; border-top:1px solid #eee; margin:14px 0 10px 0;">
+                <span style="color:#999; font-weight:400; font-family: inherit;">Reviews are scheduled using <span style="text-decoration:underline; color:#999;">exponential spacing</span>, automatically adapting from when you solve a problem up to your chosen target date.</span>
+              </div>
+            </div>
+          </button>
+        </h2>
+        <label style="display:block;margin-bottom:8px;">Target Date:</label>
         <input type="date" id="studyEndDate" style="margin-bottom:16px;width:100%;padding:6px;">
-        <div style="color:#888;font-size:13px;margin-bottom:12px;">
-          Reviews are scheduled using smart exponential spacing, automatically adapting from when you solve a problem up to your chosen end date.
-        </div>
         <button id="saveSettings" class="btn btn-primary" style="width:100%;margin-bottom:8px;">Save</button>
         <button id="cancelSettings" class="btn btn-secondary" style="width:100%;">Cancel</button>
       </div>
