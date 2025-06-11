@@ -66,44 +66,92 @@ class SpacedRepetitionManager {
 
   handleProblemSolved(problemData) {
     const problemId = problemData.id || problemData.url;
-    
     if (!problemId) {
       console.error('No problem ID found:', problemData);
       return;
     }
 
-    // Check if problem already exists
-    const existingProblem = this.problems.get(problemId.toString());
+    // Normalize URL (remove query params and trailing slash)
+    function normalizeUrl(url) {
+      try {
+        let u = new URL(url);
+        u.search = '';
+        let s = u.toString();
+        if (s.endsWith('/')) s = s.slice(0, -1);
+        return s;
+      } catch {
+        return url;
+      }
+    }
+    const newTitle = (problemData.title || '').trim().toLowerCase();
+    const newUrl = normalizeUrl(problemData.url || '');
+
+    // Find a matching problem by title or normalized url
+    let matchKey = null;
+    let matchProblem = null;
+    for (const [key, existing] of this.problems) {
+      const existingTitle = (existing.title || '').trim().toLowerCase();
+      const existingUrl = normalizeUrl(existing.url || '');
+      if ((existingTitle && newTitle && existingTitle === newTitle) ||
+          (existingUrl && newUrl && existingUrl === newUrl)) {
+        matchKey = key;
+        matchProblem = existing;
+        break;
+      }
+    }
+
     const now = Date.now();
-    
+    if (matchProblem) {
+      // Update existing problem if due for review
+      if (matchProblem.nextReview && matchProblem.nextReview <= now) {
+        matchProblem.lastSolved = problemData.submittedAt;
+        matchProblem.timeSpent = problemData.timeSpent;
+        matchProblem.solveCount = (matchProblem.solveCount || 0) + 1;
+        matchProblem.lastReviewed = now;
+        matchProblem.reviewCount = (matchProblem.reviewCount || 0) + 1;
+        matchProblem.nextReview = this.calculateNextReview(matchProblem);
+        this.problems.set(matchKey, matchProblem);
+        this.saveProblems();
+        console.log('Problem updated (was due for review):', matchProblem.title);
+      } else {
+        // Not due for review, ignore
+        console.log('Problem submission ignored (not due for review):', matchProblem.title);
+      }
+      return;
+    }
+
+    // If no match, check if problem already exists by id (legacy fallback)
+    const existingProblem = this.problems.get(problemId.toString());
     if (existingProblem) {
-      // Update existing problem
-      existingProblem.lastSolved = problemData.submittedAt;
-      existingProblem.timeSpent = problemData.timeSpent;
-      existingProblem.solveCount = (existingProblem.solveCount || 0) + 1;
-      // Do NOT overwrite nextReview from content script
-      // If due for review, auto-mark as reviewed
       if (existingProblem.nextReview && existingProblem.nextReview <= now) {
+        existingProblem.lastSolved = problemData.submittedAt;
+        existingProblem.timeSpent = problemData.timeSpent;
+        existingProblem.solveCount = (existingProblem.solveCount || 0) + 1;
         existingProblem.lastReviewed = now;
         existingProblem.reviewCount = (existingProblem.reviewCount || 0) + 1;
         existingProblem.nextReview = this.calculateNextReview(existingProblem);
+        this.problems.set(problemId.toString(), existingProblem);
+        this.saveProblems();
+        console.log('Problem updated (was due for review):', existingProblem.title);
+      } else {
+        console.log('Problem submission ignored (not due for review):', existingProblem.title);
       }
-    } else {
-      // Add new problem
-      const newProblem = {
-        ...problemData,
-        solveCount: 1,
-        reviewCount: 0,
-        lastReviewed: null,
-        createdAt: Date.now(),
-        nextReview: this.calculateNextReview(problemData)
-      };
-      console.log('[SR] New problem nextReview:', newProblem.nextReview, new Date(newProblem.nextReview).toLocaleString());
-      this.problems.set(problemId.toString(), newProblem);
+      return;
     }
 
+    // Add new problem (no match found)
+    const newProblem = {
+      ...problemData,
+      solveCount: 1,
+      reviewCount: 0,
+      lastReviewed: null,
+      createdAt: Date.now(),
+      nextReview: this.calculateNextReview(problemData)
+    };
+    console.log('[SR] New problem nextReview:', newProblem.nextReview, new Date(newProblem.nextReview).toLocaleString());
+    this.problems.set(problemId.toString(), newProblem);
     this.saveProblems();
-    console.log('Problem saved:', problemData.title);
+    console.log('New problem added:', problemData.title);
   }
 
   async getDailyReviews() {
