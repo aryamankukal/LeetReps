@@ -22,7 +22,7 @@ The extension uses an exponential spacing system:
 
 ## Usage
 
-1. **Solve Problems**: Visit LeetCode and solve problems as usual. Problems are only added when you submit and get an accepted solution.
+1. **Solve Problems**: Visit LeetCode and solve problems as usual. Problems are only added when you submit and get an accepted solution (currently adds all submissions, not just accepted ones, will fix this in the future)
 2. **Set Your Target Date**: On first use, the extension will prompt you to set your Target Date (e.g., your next interview). You can change this anytime via the gear icon.
 3. **Check Reviews**: Click the extension icon to see problems due for review today in the "Today's Reviews" tab.
 4. **Mark as Reviewed**: Click "Mark Reviewed" after reviewing a problem to schedule the next review.
