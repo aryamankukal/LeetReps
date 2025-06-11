@@ -20,20 +20,6 @@ The extension uses an exponential spacing system:
 - Reviews are scheduled at increasing intervals from when you solve a problem up to your chosen target date.
 - The algorithm adapts the number and spacing of reviews based on how far away your target date is.
 
-## Installation
-
-### Method 1: Manual Installation
-
-1. Download or clone this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable "Developer mode" in the top right
-4. Click "Load unpacked" and select the extension folder
-5. The extension should now appear in your extensions list
-
-### Method 2: Chrome Web Store (Coming Soon)
-
-The extension will be available on the Chrome Web Store once published.
-
 ## Usage
 
 1. **Solve Problems**: Visit LeetCode and solve problems as usual. Problems are only added when you submit and get an accepted solution.
