@@ -43,6 +43,48 @@ class PopupManager {
         this.exportData();
       });
     }
+
+    // Settings modal event listeners
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) settingsBtn.onclick = () => {
+      // Prefill the end date input with the saved value
+      const end = localStorage.getItem('sr_study_end');
+      if (end) document.getElementById('studyEndDate').value = end;
+      document.getElementById('settingsModal').style.display = 'flex';
+    };
+    const closeSettingsModal = document.getElementById('closeSettingsModal');
+    if (closeSettingsModal) closeSettingsModal.onclick = () => {
+      document.getElementById('settingsModal').style.display = 'none';
+    };
+    const cancelSettings = document.getElementById('cancelSettings');
+    if (cancelSettings) cancelSettings.onclick = () => {
+      document.getElementById('settingsModal').style.display = 'none';
+    };
+    const saveSettings = document.getElementById('saveSettings');
+    if (saveSettings) saveSettings.onclick = () => {
+      const end = document.getElementById('studyEndDate').value;
+      if (!end) return;
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const endDate = new Date(end);
+      endDate.setHours(0,0,0,0);
+      const msPerDay = 1000 * 60 * 60 * 24;
+      const diffDays = Math.floor((endDate - today) / msPerDay);
+      if (diffDays < 0) {
+        alert('Please choose a study end date that is in the future.');
+        return;
+      }
+      if (diffDays < 2) {
+        alert('Please choose a study end date that is more than 2 days in the future.');
+        return;
+      }
+      localStorage.setItem('sr_study_end', end);
+      // Update all problems' nextReview dates
+      chrome.runtime.sendMessage({ type: 'UPDATE_ALL_NEXT_REVIEWS' }, () => {
+        if (popupManager) popupManager.loadData();
+      });
+      document.getElementById('settingsModal').style.display = 'none';
+    };
   }
 
   async loadData() {
@@ -137,7 +179,64 @@ class PopupManager {
     const difficultyClass = problem.difficulty ? problem.difficulty.toLowerCase() : 'medium';
     const nextReviewDate = problem.nextReview ? new Date(problem.nextReview).toLocaleString() : 'Not scheduled';
     const timeSpent = this.formatTime(problem.timeSpent);
-    
+
+    // Calculation details for debugging
+    let calcDetails = '';
+    try {
+      const endStr = localStorage.getItem('sr_study_end');
+      if (endStr && problem.createdAt) {
+        const endDate = new Date(endStr);
+        const createdAt = new Date(problem.createdAt);
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const D = Math.round((endDate - createdAt) / msPerDay);
+        let N;
+        if (D <= 7) N = 1;
+        else if (D <= 14) N = 2;
+        else if (D <= 30) N = 3;
+        else if (D <= 45) N = 4;
+        else N = 5;
+        const intervals = [];
+        const reviewDates = [];
+        for (let i = 1; i <= N; i++) {
+          const days = Math.round(D * Math.pow(i / N, 2));
+          intervals.push(days);
+          const reviewDate = new Date(createdAt.getTime() + days * msPerDay);
+          reviewDates.push(reviewDate.toLocaleDateString());
+        }
+        calcDetails = `<div style='color:#888;font-size:12px;margin-top:4px;'>End: ${endDate.toLocaleDateString()}<br>Intervals: [${intervals.join(', ')}] days<br>Review Dates: ${reviewDates.join(' | ')}</div>`;
+      }
+    } catch (e) {}
+
+    // Calculate the correct next review date for display
+    let correctNextReviewDate = nextReviewDate;
+    try {
+      const endStr = localStorage.getItem('sr_study_end');
+      if (endStr && problem.createdAt !== undefined && problem.reviewCount !== undefined) {
+        const endDate = new Date(endStr);
+        const createdAt = new Date(problem.createdAt);
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const D = Math.round((endDate - createdAt) / msPerDay);
+        let N;
+        if (D <= 7) N = 1;
+        else if (D <= 14) N = 2;
+        else if (D <= 30) N = 3;
+        else if (D <= 45) N = 4;
+        else N = 5;
+        const intervals = [];
+        for (let i = 1; i <= N; i++) {
+          intervals.push(Math.round(D * Math.pow(i / N, 2)));
+        }
+        let idx = problem.reviewCount || 0;
+        let reviewDate;
+        if (idx < intervals.length) {
+          reviewDate = new Date(createdAt.getTime() + intervals[idx] * msPerDay);
+        } else {
+          reviewDate = endDate;
+        }
+        correctNextReviewDate = reviewDate.toLocaleDateString();
+      }
+    } catch (e) {}
+
     return `
       <div class="problem-card">
         <div class="problem-title-top">
@@ -159,7 +258,7 @@ class PopupManager {
           </div>
         ` : `
           <div class="problem-meta">
-            <span>Next review: ${nextReviewDate}</span>
+            <span>Next review: ${correctNextReviewDate}</span>
             <span>Reviews: ${problem.reviewCount || 0}</span>
           </div>
         `}
@@ -339,6 +438,12 @@ document.addEventListener('click', (e) => {
   }
   
   if (e.target.classList.contains('open-problem-btn')) {
+    e.preventDefault();
+    const url = e.target.getAttribute('data-url');
+    if (url) popupManager.openProblem(url);
+  }
+  // Make problem title clickable as a link
+  if (e.target.classList.contains('problem-title')) {
     e.preventDefault();
     const url = e.target.getAttribute('data-url');
     if (url) popupManager.openProblem(url);

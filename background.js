@@ -183,18 +183,40 @@ class SpacedRepetitionManager {
   }
 
   calculateNextReview(problem) {
+    try {
+      const startStr = localStorage.getItem('sr_study_start');
+      const endStr = localStorage.getItem('sr_study_end');
+      if (startStr && endStr) {
+        let startDate = new Date(startStr).setHours(0,0,0,0);
+        const endDate = new Date(endStr).setHours(0,0,0,0);
+        let createdAt = problem.createdAt || Date.now();
+        if (createdAt < startDate) createdAt = startDate;
+        if (createdAt > endDate) return endDate;
+        const reviewCount = problem.reviewCount || 0;
+        // Generate intervals in days
+        const intervals = this.generateReviewIntervals(createdAt, endDate);
+        // Calculate the next review date
+        let next;
+        if (reviewCount < intervals.length) {
+          next = createdAt + intervals[reviewCount] * 24 * 60 * 60 * 1000;
+        } else {
+          next = endDate;
+        }
+        if (next > endDate) next = endDate;
+        const nextDate = new Date(next); nextDate.setHours(0,0,0,0);
+        return nextDate.getTime();
+      }
+    } catch (e) {
+      // Fallback to default
+    }
+    // Default spaced repetition intervals in days
     const reviewCount = problem.reviewCount || 0;
-    // Spaced repetition intervals in days
     const intervals = [1, 3, 7, 14, 30, 60, 120, 240];
     const intervalIndex = Math.min(reviewCount, intervals.length - 1);
     const intervalDays = intervals[intervalIndex];
-
-    // Calculate the target date (intervalDays from now)
     const now = new Date();
-    now.setHours(0, 0, 0, 0); // Set to today's midnight
+    now.setHours(0, 0, 0, 0);
     const targetDate = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000);
-
-    // Set nextReview to 12:00 AM of the target day
     return targetDate.getTime();
   }
 
@@ -257,6 +279,23 @@ class SpacedRepetitionManager {
       await this.saveProblems();
       console.log('[SR] Fixed missing nextReview dates for existing problems');
     }
+  }
+
+  // Generate review intervals (in days) using exponential spacing
+  generateReviewIntervals(problemDate, endDate) {
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const D = Math.round((endDate - problemDate) / msPerDay);
+    let N;
+    if (D <= 7) N = 1;
+    else if (D <= 14) N = 2;
+    else if (D <= 30) N = 3;
+    else if (D <= 45) N = 4;
+    else N = 5;
+    const intervals = [];
+    for (let i = 1; i <= N; i++) {
+      intervals.push(Math.round(D * Math.pow(i / N, 2)));
+    }
+    return intervals;
   }
 }
 

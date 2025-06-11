@@ -26,11 +26,16 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1 class="title">
-                <img src="icons/lc128icon.png" alt="LeetCode Logo" style="width:24px;height:24px;margin-right:8px;vertical-align:middle;" />
-                LeetCode Spaced Repetition
-            </h1>
+        <header class="header" style="position:relative;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <img src="icons/lc128icon.png" alt="LeetCode Logo" style="width:24px;height:24px;vertical-align:middle;" />
+              <span style="font-size:18px;font-weight:600;white-space:nowrap;">LeetReview Spaced Repetition</span>
+            </div>
+            <button id="settingsBtn" style="background:none;border:none;cursor:pointer;padding:0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 5 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.6 5a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 16 5a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19 8.6a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19 15.4z"></path></svg>
+            </button>
+          </div>
         </header>
 
         <div class="tabs">
@@ -84,6 +89,20 @@
             <button id="clearAll" class="btn-secondary">Clear All</button>
             <button id="exportData" class="btn-secondary">Export Data</button>
         </footer>
+    </div>
+
+    <div id="settingsModal" class="modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:1000;align-items:center;justify-content:center;">
+      <div class="modal-content" style="background:#fff;padding:24px 20px 20px 20px;border-radius:10px;max-width:340px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;">
+        <button id="closeSettingsModal" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;cursor:pointer;">&times;</button>
+        <h2 style="margin-bottom:16px;font-size:18px;">Custom Review Schedule</h2>
+        <label style="display:block;margin-bottom:8px;">Study End Date:</label>
+        <input type="date" id="studyEndDate" style="margin-bottom:16px;width:100%;padding:6px;">
+        <div style="color:#888;font-size:13px;margin-bottom:12px;">
+          Reviews are scheduled using smart exponential spacing, automatically adapting from when you solve a problem up to your chosen end date.
+        </div>
+        <button id="saveSettings" class="btn btn-primary" style="width:100%;margin-bottom:8px;">Save</button>
+        <button id="cancelSettings" class="btn btn-secondary" style="width:100%;">Cancel</button>
+      </div>
     </div>
 
     <script src="popup.js"></script>
